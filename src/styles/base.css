@@ -224,9 +224,7 @@ svg {
 .nav-social svg,
 .button svg,
 .text-link svg,
-.section-footer-link svg,
-.pricing-cta svg,
-.pricing-note svg {
+.section-footer-link svg {
   width: 15px;
   height: 15px;
   fill: none;
