@@ -229,9 +229,6 @@ function HeroVisual() {
       <div className="vibe-signal vibe-signal-one" />
       <div className="vibe-signal vibe-signal-two" />
       <div className="vibe-signal vibe-signal-three" />
-      <div className="hero-visual-label hero-visual-label-top">
-        <span /> signal / structure
-      </div>
       <div className="hero-visual-label hero-visual-label-bottom">
         Go · agents · services
       </div>
