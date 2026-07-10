@@ -1,0 +1,14 @@
+@import './base.css';
+@import './hero.css';
+@import './content.css';
+@import './pricing.css';
+@import './about.css';
+@import './responsive.css';
+
+/* Neutralize layout rules from the previous design while the PR retains its history. */
+.project-row {
+  display: block;
+  grid-template-columns: none;
+  gap: 0;
+  padding: 0;
+}
