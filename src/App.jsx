@@ -206,40 +206,10 @@ function Header() {
   )
 }
 
-function HeroVisual() {
-  return (
-    <div className="hero-visual vibe-visual" aria-hidden="true">
-      <div className="vibe-grid" />
-      <div className="vibe-glow vibe-glow-primary" />
-      <div className="vibe-glow vibe-glow-secondary" />
-      <div className="vibe-orbit vibe-orbit-outer"><span /></div>
-      <div className="vibe-orbit vibe-orbit-middle"><span /></div>
-      <div className="vibe-orbit vibe-orbit-inner"><span /></div>
-      <div className="vibe-beam vibe-beam-one" />
-      <div className="vibe-beam vibe-beam-two" />
-      <div className="vibe-core">
-        <small>Protocol Lattice</small>
-        <strong>Go</strong>
-        <span>systems in motion</span>
-      </div>
-      <div className="vibe-chip vibe-chip-agent"><i /> agents</div>
-      <div className="vibe-chip vibe-chip-events"><i /> events</div>
-      <div className="vibe-chip vibe-chip-api"><i /> APIs</div>
-      <div className="vibe-chip vibe-chip-tools"><i /> tools</div>
-      <div className="vibe-signal vibe-signal-one" />
-      <div className="vibe-signal vibe-signal-two" />
-      <div className="vibe-signal vibe-signal-three" />
-      <div className="hero-visual-label hero-visual-label-bottom">
-        Go · agents · services
-      </div>
-    </div>
-  )
-}
-
 function Hero() {
   return (
     <main id="top">
-      <section className="hero shell" aria-labelledby="hero-title">
+      <section className="hero hero-text-only shell" aria-labelledby="hero-title">
         <div className="hero-copy">
           <div className="eyebrow"><span /> Senior Go engineer · Open source builder</div>
           <h1 id="hero-title">
@@ -262,7 +232,6 @@ function Hero() {
             <div><dt>Location</dt><dd>Poland · Remote Europe</dd></div>
           </dl>
         </div>
-        <HeroVisual />
       </section>
     </main>
   )
