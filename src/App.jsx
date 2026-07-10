@@ -1,135 +1,156 @@
 import { useEffect, useRef, useState } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
-import Lattice from './Lattice'
-import Thread from './Thread'
 import './App.css'
 
 const PROJECTS = [
   {
-    id: '01',
-    name: 'neo',
-    tag: 'rpc framework · protocol-lattice/neo',
-    desc: 'A tRPC-style RPC framework for Go — typed errors, HTTP method enforcement, WebSocket support with leak-safe goroutine handling, and a hardened server builder with graceful shutdown built in from the start.',
-    stack: ['Go', 'RPC', 'WebSocket'],
-    url: 'https://github.com/protocol-Lattice/neo',
-  },
-  {
-    id: '02',
-    name: 'go-harness',
-    tag: 'agentic coding harness · protocol-lattice/go-harness',
-    desc: 'An agentic coding harness built around a UTCP CLI provider system — approval-gated execution loop, task queue runtime, and slash commands for structured, controllable AI-assisted development.',
-    stack: ['Go', 'UTCP', 'Agent Tooling'],
-    url: 'https://github.com/protocol-Lattice/go-harness',
-  },
-  {
-    id: '03',
+    index: '01',
     name: 'go-agent',
-    tag: 'agent framework',
-    desc: 'Framework for building autonomous AI agents in Go — orchestration, tool-calling, and memory as first-class primitives rather than bolted-on middleware.',
-    stack: ['Go', 'Concurrency', 'Agent Orchestration'],
+    type: 'AI agent framework',
+    description:
+      'A Go-native framework for building autonomous agents with orchestration, tool calling, memory, sessions, and multiple model providers as first-class primitives.',
+    tags: ['Go', 'Agents', 'Tool calling'],
+    href: 'https://github.com/Protocol-Lattice/go-agent',
+    featured: true,
   },
   {
-    id: '04',
-    name: 'UTCP',
-    tag: 'protocol · go-utcp · rs-utcp',
-    desc: 'Universal Tool Calling Protocol — a cross-language standard for structured communication between AI agents and tools. Multiple transports, pluggable providers, CodeMode execution.',
-    stack: ['Go', 'Rust', 'Protocol Design'],
+    index: '02',
+    name: 'neo',
+    type: 'Type-friendly RPC',
+    description:
+      'A procedure-oriented framework for Go backends with queries, mutations, subscriptions, middleware, typed clients, and code generation.',
+    tags: ['Go', 'RPC', 'WebSocket'],
+    href: 'https://github.com/Protocol-Lattice/neo',
+    featured: true,
   },
   {
-    id: '05',
+    index: '03',
+    name: 'go-harness',
+    type: 'Agentic development runtime',
+    description:
+      'A controllable coding-agent harness with approval-gated execution, task graphs, work queues, validation, and multi-agent workflows.',
+    tags: ['Go', 'AI tooling', 'Automation'],
+    href: 'https://github.com/Protocol-Lattice/go-harness',
+    featured: true,
+  },
+  {
+    index: '04',
+    name: 'go-utcp',
+    type: 'Universal tool protocol',
+    description:
+      'The Go SDK for a transport-agnostic protocol that lets agents discover and call tools through HTTP, SSE, WebSocket, gRPC, CLI, and more.',
+    tags: ['Go', 'Protocols', 'Interoperability'],
+    href: 'https://github.com/universal-tool-calling-protocol/go-utcp',
+    featured: false,
+  },
+  {
+    index: '05',
     name: 'GoEventBus',
-    tag: 'event bus',
-    desc: 'Lightweight, high-performance event bus for Go, built for low-latency dispatch under real concurrent load.',
-    stack: ['Go', 'Concurrency', 'Event-Driven'],
+    type: 'Event-driven infrastructure',
+    description:
+      'A compact event bus for concurrent Go applications, designed around predictable dispatch, extensible transports, and straightforward APIs.',
+    tags: ['Go', 'Concurrency', 'Messaging'],
+    href: 'https://github.com/Protocol-Lattice/GoEventBus',
+    featured: false,
   },
   {
-    id: '06',
-    name: 'grpc_graphql_gateway',
-    tag: 'rust plugin',
-    desc: 'A Rust plugin that transforms gRPC services into GraphQL — interoperability at the protocol boundary, not the application layer.',
-    stack: ['Rust', 'gRPC', 'GraphQL'],
-  },
-  {
-    id: '07',
-    name: 'Thunder',
-    tag: 'backend framework',
-    desc: 'Minimalist backend framework that transforms gRPC services into both REST and GraphQL from a single definition.',
-    stack: ['Go', 'gRPC', 'REST'],
+    index: '06',
+    name: 'memoryArena',
+    type: 'Allocation toolkit',
+    description:
+      'A family of typed arena allocators for performance-sensitive Go workloads, including concurrent and pooled variants.',
+    tags: ['Go', 'Performance', 'Memory'],
+    href: 'https://github.com/Protocol-Lattice/memoryArena',
+    featured: false,
   },
 ]
 
 const EXPERIENCE = [
   {
-    org: 'Protocol Lattice',
-    role: 'Founder / Open Source Developer',
-    period: 'Ongoing',
-    detail:
-      'Founded and maintain an open-source ecosystem for Go-based backend systems, AI agents, and developer tooling. Design modular libraries for distributed and event-driven architectures; apply Go concurrency patterns for low-latency, scalable solutions.',
+    period: 'Now',
+    company: 'Protocol Lattice',
+    role: 'Founder · Open-source engineer',
+    description:
+      'Designing and maintaining Go infrastructure for AI agents, typed backends, event-driven systems, and developer tooling.',
   },
   {
-    org: 'Universal Tool Calling Protocol',
-    role: 'Contributor',
-    period: 'Ongoing',
-    detail:
-      'Contributed to a cross-language standard for structured communication between AI agents and tools, working across the Go and Rust implementations plus transport and provider layers.',
+    period: '2022',
+    company: 'EPAM Systems',
+    role: 'Software engineer',
+    description:
+      'Maintained enterprise backend systems, improved APIs, and contributed to performance-focused application work.',
   },
   {
-    org: 'EPAM Systems',
-    role: 'Software Engineer',
-    period: 'Jun 2022 – Sep 2022',
-    detail: 'Enhanced and maintained a Ruby on Rails backend for enterprise clients, contributing to API design and performance tuning.',
+    period: '2021–22',
+    company: 'intive',
+    role: 'Software engineer',
+    description:
+      'Built Go services and test suites for production web applications in a collaborative engineering environment.',
   },
   {
-    org: 'intive',
-    role: 'Junior Software Engineer',
-    period: 'Nov 2021 – May 2022',
-    detail: 'Developed Golang services and unit tests for web-scale applications.',
-  },
-  {
-    org: 'Monterail',
-    role: 'Junior Software Engineer',
-    period: 'May 2021 – Sep 2021',
-    detail: 'Designed and maintained GraphQL APIs and web application features.',
+    period: '2021',
+    company: 'Monterail',
+    role: 'Software engineer',
+    description:
+      'Developed GraphQL APIs and product features across backend and web application boundaries.',
   },
 ]
 
-const STACK_GROUPS = [
-  { label: 'Languages', items: ['Go', 'Rust', 'Ruby'] },
-  { label: 'Protocols', items: ['gRPC', 'GraphQL', 'REST'] },
-  { label: 'Frameworks', items: ['Gin', 'Prisma', 'Ruby on Rails', 'Sidekiq', 'Spec'] },
-  { label: 'Infra', items: ['Docker', 'Kubernetes', 'CI/CD', 'MinIO'] },
-  { label: 'Data', items: ['PostgreSQL', 'MySQL', 'NoSQL'] },
-  { label: 'AI Tools', items: ['Claude Code', 'Codex', 'Google Antigravity', 'Gemini CLI'] },
+const CAPABILITIES = [
+  ['Backend systems', 'Go, gRPC, GraphQL, REST, WebSocket'],
+  ['Distributed architecture', 'Event-driven systems, microservices, messaging'],
+  ['AI infrastructure', 'Agents, tool protocols, RAG, model providers'],
+  ['Platform engineering', 'Docker, Kubernetes, CI/CD, observability'],
 ]
 
-function useReveal() {
+function ArrowUpRight() {
+  return (
+    <svg viewBox="0 0 20 20" aria-hidden="true">
+      <path d="M5 15 15 5M7 5h8v8" />
+    </svg>
+  )
+}
+
+function MenuIcon({ open }) {
+  return (
+    <span className={`menu-icon ${open ? 'is-open' : ''}`} aria-hidden="true">
+      <span />
+      <span />
+    </span>
+  )
+}
+
+function Reveal({ children, className = '', delay = 0 }) {
   const ref = useRef(null)
   const [visible, setVisible] = useState(false)
+
   useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const obs = new IntersectionObserver(
+    const element = ref.current
+    if (!element) return undefined
+
+    if (!('IntersectionObserver' in window)) {
+      setVisible(true)
+      return undefined
+    }
+
+    const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setVisible(true)
-          obs.disconnect()
+          observer.disconnect()
         }
       },
-      { threshold: 0.15 }
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
     )
-    obs.observe(el)
-    return () => obs.disconnect()
-  }, [])
-  return [ref, visible]
-}
 
-function Reveal({ children, delay = 0, className = '' }) {
-  const [ref, visible] = useReveal()
+    observer.observe(element)
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <div
       ref={ref}
-      className={`reveal ${visible ? 'reveal-visible' : ''} ${className}`}
-      style={{ transitionDelay: `${delay}ms` }}
+      className={`reveal ${visible ? 'is-visible' : ''} ${className}`}
+      style={{ '--reveal-delay': `${delay}ms` }}
     >
       {children}
     </div>
@@ -137,156 +158,204 @@ function Reveal({ children, delay = 0, className = '' }) {
 }
 
 function Header() {
+  const [menuOpen, setMenuOpen] = useState(false)
+
+  useEffect(() => {
+    document.body.classList.toggle('menu-open', menuOpen)
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') setMenuOpen(false)
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.body.classList.remove('menu-open')
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [menuOpen])
+
+  const closeMenu = () => setMenuOpen(false)
+
   return (
     <header className="site-header">
-      <div className="brand">
-        <span className="brand-mark" aria-hidden="true" />
-        Kamil Mościszko
-      </div>
-      <nav className="site-nav">
-        <a href="#work">Work</a>
-        <a href="#stack">Stack</a>
-        <a href="#experience">Experience</a>
-        <a href="#contact">Contact</a>
-      </nav>
-      <a href="mailto:kmosc@protonmail.com" className="nav-cta">
-        kmosc@protonmail.com
+      <a className="brand" href="#top" aria-label="Kamil Mościszko — home" onClick={closeMenu}>
+        <span className="brand-glyph">KM</span>
+        <span className="brand-copy">
+          <strong>Kamil Mościszko</strong>
+          <small>Go systems · AI infrastructure</small>
+        </span>
       </a>
+
+      <nav className={`site-nav ${menuOpen ? 'is-open' : ''}`} aria-label="Primary navigation">
+        <a href="#work" onClick={closeMenu}>Work</a>
+        <a href="#about" onClick={closeMenu}>About</a>
+        <a href="#experience" onClick={closeMenu}>Experience</a>
+        <a href="#contact" onClick={closeMenu}>Contact</a>
+        <a
+          className="nav-social"
+          href="https://github.com/Raezil"
+          target="_blank"
+          rel="noreferrer"
+          onClick={closeMenu}
+        >
+          GitHub <ArrowUpRight />
+        </a>
+      </nav>
+
+      <button
+        className="menu-toggle"
+        type="button"
+        aria-label={menuOpen ? 'Close navigation' : 'Open navigation'}
+        aria-expanded={menuOpen}
+        onClick={() => setMenuOpen((value) => !value)}
+      >
+        <MenuIcon open={menuOpen} />
+      </button>
     </header>
   )
 }
 
+function NetworkVisual() {
+  return (
+    <div className="network-visual" aria-hidden="true">
+      <div className="network-grid" />
+      <div className="orbit orbit-one" />
+      <div className="orbit orbit-two" />
+      <div className="network-node node-core"><span>Go</span></div>
+      <div className="network-node node-agent"><span>agent</span></div>
+      <div className="network-node node-tool"><span>tool</span></div>
+      <div className="network-node node-event"><span>event</span></div>
+      <div className="network-node node-api"><span>API</span></div>
+      <div className="network-line line-one" />
+      <div className="network-line line-two" />
+      <div className="network-line line-three" />
+      <div className="network-line line-four" />
+      <div className="visual-caption">
+        <span className="status-dot" />
+        building reliable connections
+      </div>
+    </div>
+  )
+}
+
 function Hero() {
-  const { scrollY } = useScroll()
-  const opacity = useTransform(scrollY, [0, 500], [1, 0])
-  const y = useTransform(scrollY, [0, 500], [0, 60])
-
   return (
-    <section className="hero">
-      <Lattice className="hero-canvas" />
-      <div className="hero-scrim" aria-hidden="true" />
-      <motion.div className="hero-content" style={{ opacity, y }}>
-        <p className="hero-eyebrow">Protocol-Lattice · github.com/raezil</p>
-        <h1 className="hero-title">
-          Building the wire
-          <br />
-          machines talk on.
-        </h1>
-        <p className="hero-sub">
-          Open-source Go developer specializing in high-performance backend systems,
-          microservices, and event-driven architectures — with a growing focus on
-          protocols for AI agents and tool-calling.
-        </p>
-        <div className="hero-actions">
-          <a href="#work" className="btn-primary">
-            See the work
-          </a>
-          <a href="https://github.com/raezil" target="_blank" rel="noreferrer" className="btn-ghost">
-            @raezil on GitHub
-          </a>
+    <main id="top">
+      <section className="hero shell" aria-labelledby="hero-title">
+        <div className="hero-copy">
+          <div className="eyebrow"><span /> Senior Go engineer · Open source</div>
+          <h1 id="hero-title">
+            Infrastructure for
+            <span>software that thinks.</span>
+          </h1>
+          <p className="hero-intro">
+            I design Go systems, AI-agent infrastructure, and developer tools with an emphasis on
+            clear APIs, predictable concurrency, and production-ready architecture.
+          </p>
+          <div className="hero-actions">
+            <a className="button button-primary" href="#work">Explore selected work</a>
+            <a
+              className="button button-secondary"
+              href="https://github.com/Raezil"
+              target="_blank"
+              rel="noreferrer"
+            >
+              View GitHub <ArrowUpRight />
+            </a>
+          </div>
+          <dl className="hero-facts">
+            <div><dt>Focus</dt><dd>Go · AI · distributed systems</dd></div>
+            <div><dt>Building</dt><dd>Protocol Lattice</dd></div>
+            <div><dt>Based in</dt><dd>Poland · Remote Europe</dd></div>
+          </dl>
         </div>
-      </motion.div>
-      <div className="hero-scroll-cue" aria-hidden="true">
-        <span />
-        scroll
-      </div>
-    </section>
+        <NetworkVisual />
+      </section>
+    </main>
   )
 }
 
-function SectionLabel({ index, title }) {
+function SectionHeading({ eyebrow, title, description }) {
   return (
-    <div className="section-label">
-      <span className="section-index">{index}</span>
-      <span className="section-line" aria-hidden="true" />
-      <span className="section-title">{title}</span>
+    <div className="section-heading">
+      <p className="section-eyebrow">{eyebrow}</p>
+      <div>
+        <h2>{title}</h2>
+        {description && <p>{description}</p>}
+      </div>
     </div>
   )
 }
 
-function Profile() {
+function ProjectCard({ project, delay }) {
   return (
-    <section className="profile" id="about">
-      <Reveal>
-        <SectionLabel index="§1" title="Profile" />
-      </Reveal>
-      <Reveal delay={80}>
-        <p className="profile-text">
-          A strong advocate of simplicity, performance, and clean architecture — designing
-          developer tools and frameworks with a focus on concurrency, reliability, and
-          extensibility. Experienced in building and maintaining scalable services using
-          Go, gRPC, and GraphQL. Interested in AI-integrated systems and autonomous agents,
-          and in the protocols that let them talk to each other reliably.
-        </p>
-      </Reveal>
-    </section>
+    <Reveal className={`project-card ${project.featured ? 'project-featured' : ''}`} delay={delay}>
+      <a href={project.href} target="_blank" rel="noreferrer" aria-label={`${project.name} on GitHub`}>
+        <div className="project-topline">
+          <span>{project.index}</span>
+          <ArrowUpRight />
+        </div>
+        <div className="project-content">
+          <p className="project-type">{project.type}</p>
+          <h3>{project.name}</h3>
+          <p className="project-description">{project.description}</p>
+        </div>
+        <ul className="tag-list" aria-label="Technologies">
+          {project.tags.map((tag) => <li key={tag}>{tag}</li>)}
+        </ul>
+      </a>
+    </Reveal>
   )
 }
 
-function Projects() {
+function Work() {
   return (
-    <section className="projects" id="work">
+    <section className="section shell" id="work">
       <Reveal>
-        <SectionLabel index="§2" title="Key Projects" />
+        <SectionHeading
+          eyebrow="01 · Selected work"
+          title="Open infrastructure, built in public."
+          description="Frameworks and foundational libraries for agents, backends, protocols, and high-performance Go applications."
+        />
       </Reveal>
-      <div className="project-list">
-        {PROJECTS.map((p, i) => (
-          <Reveal key={p.id} delay={i * 70} className="project-row-wrap">
-            <article className="project-row">
-              <span className="project-id">{p.id}</span>
-              <div className="project-body">
-                <div className="project-heading">
-                  <h3>
-                    {p.url ? (
-                      <a href={p.url} target="_blank" rel="noreferrer" className="project-link">
-                        {p.name}
-                      </a>
-                    ) : (
-                      p.name
-                    )}
-                  </h3>
-                  <span className="project-tag">{p.tag}</span>
-                </div>
-                <p>{p.desc}</p>
-                <ul className="project-stack">
-                  {p.stack.map((s) => (
-                    <li key={s}>{s}</li>
-                  ))}
-                </ul>
-              </div>
-            </article>
-          </Reveal>
+      <div className="project-grid">
+        {PROJECTS.map((project, index) => (
+          <ProjectCard key={project.name} project={project} delay={(index % 3) * 70} />
         ))}
       </div>
+      <Reveal className="section-footer-link">
+        <a href="https://github.com/orgs/Protocol-Lattice/repositories" target="_blank" rel="noreferrer">
+          Browse all Protocol Lattice repositories <ArrowUpRight />
+        </a>
+      </Reveal>
     </section>
   )
 }
 
-function ThreadDivider({ seed }) {
+function About() {
   return (
-    <div className="thread-divider" aria-hidden="true">
-      <Thread seed={seed} className="thread-canvas" />
-    </div>
-  )
-}
-
-function Stack() {
-  return (
-    <section className="stack" id="stack">
-      <Reveal>
-        <SectionLabel index="§3" title="Core Competencies" />
-      </Reveal>
-      <div className="stack-grid">
-        {STACK_GROUPS.map((g, i) => (
-          <Reveal key={g.label} delay={i * 60} className="stack-group">
-            <h4>{g.label}</h4>
-            <ul>
-              {g.items.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
+    <section className="section section-muted" id="about">
+      <div className="shell">
+        <Reveal>
+          <SectionHeading eyebrow="02 · Approach" title="Make the complex feel obvious." />
+        </Reveal>
+        <div className="about-grid">
+          <Reveal className="about-statement">
+            <p>
+              I work at the layer where architecture becomes an API: turning concurrency,
+              distributed communication, and agent orchestration into tools other developers can
+              understand and trust.
+            </p>
           </Reveal>
-        ))}
+          <div className="capability-list">
+            {CAPABILITIES.map(([title, detail], index) => (
+              <Reveal className="capability-row" key={title} delay={index * 60}>
+                <span>0{index + 1}</span>
+                <div><h3>{title}</h3><p>{detail}</p></div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   )
@@ -294,23 +363,20 @@ function Stack() {
 
 function Experience() {
   return (
-    <section className="experience" id="experience">
+    <section className="section shell" id="experience">
       <Reveal>
-        <SectionLabel index="§4" title="Professional Experience" />
+        <SectionHeading
+          eyebrow="03 · Experience"
+          title="Backend engineering with a product mindset."
+          description="Experience across open-source infrastructure, enterprise systems, APIs, and production web platforms."
+        />
       </Reveal>
-      <div className="timeline">
-        {EXPERIENCE.map((e, i) => (
-          <Reveal key={e.org} delay={i * 70} className="timeline-row-wrap">
-            <div className="timeline-row">
-              <div className="timeline-period">{e.period}</div>
-              <div className="timeline-main">
-                <div className="timeline-heading">
-                  <h3>{e.org}</h3>
-                  <span>{e.role}</span>
-                </div>
-                <p>{e.detail}</p>
-              </div>
-            </div>
+      <div className="experience-list">
+        {EXPERIENCE.map((item, index) => (
+          <Reveal className="experience-row" key={`${item.company}-${item.period}`} delay={index * 60}>
+            <p className="experience-period">{item.period}</p>
+            <div className="experience-title"><h3>{item.company}</h3><p>{item.role}</p></div>
+            <p className="experience-description">{item.description}</p>
           </Reveal>
         ))}
       </div>
@@ -321,26 +387,29 @@ function Experience() {
 function Contact() {
   return (
     <section className="contact" id="contact">
-      <Reveal>
-        <SectionLabel index="§5" title="Get in touch" />
-      </Reveal>
-      <Reveal delay={80}>
-        <h2 className="contact-title">Open to backend &amp; AI-infra collaborations.</h2>
-      </Reveal>
-      <Reveal delay={140}>
-        <div className="contact-links">
-          <a href="mailto:kmosc@protonmail.com" className="btn-primary">
-            kmosc@protonmail.com
-          </a>
-          <a href="tel:+48575044972" className="btn-ghost">
-            +48 575 044 972
-          </a>
-          <a href="https://github.com/raezil" target="_blank" rel="noreferrer" className="btn-ghost">
-            github.com/raezil
-          </a>
-        </div>
-      </Reveal>
-      <p className="footer-note">Protocol-Lattice — Szczecin, Poland</p>
+      <div className="shell contact-grid">
+        <Reveal>
+          <p className="section-eyebrow">04 · Contact</p>
+          <h2>Let’s build dependable infrastructure.</h2>
+        </Reveal>
+        <Reveal className="contact-panel" delay={90}>
+          <p>
+            Available for conversations about Go backend engineering, AI infrastructure,
+            open-source collaboration, and developer tooling.
+          </p>
+          <div className="contact-actions">
+            <a className="button button-light" href="mailto:kmosc@protonmail.com">kmosc@protonmail.com</a>
+            <a className="text-link" href="https://www.linkedin.com/in/kamilm97" target="_blank" rel="noreferrer">
+              LinkedIn <ArrowUpRight />
+            </a>
+          </div>
+        </Reveal>
+      </div>
+      <footer className="shell site-footer">
+        <p>© {new Date().getFullYear()} Kamil Mościszko</p>
+        <p>Designed for clarity. Built with React.</p>
+        <a href="#top">Back to top ↑</a>
+      </footer>
     </section>
   )
 }
@@ -348,14 +417,11 @@ function Contact() {
 export default function App() {
   return (
     <div className="page">
+      <a className="skip-link" href="#work">Skip to selected work</a>
       <Header />
       <Hero />
-      <Profile />
-      <ThreadDivider seed={0} />
-      <Projects />
-      <ThreadDivider seed={2.1} />
-      <Stack />
-      <ThreadDivider seed={4.4} />
+      <Work />
+      <About />
       <Experience />
       <Contact />
     </div>
