@@ -1,66 +1,109 @@
 import { useEffect, useRef, useState } from 'react'
 import './App.css'
 
+const SERVICES = [
+  {
+    number: '01',
+    title: 'Backend architecture',
+    description:
+      'Design and evolve Go services, APIs, event-driven systems, and distributed workflows that remain understandable as they scale.',
+    capabilities: ['System design', 'gRPC & GraphQL', 'Concurrency', 'Performance'],
+  },
+  {
+    number: '02',
+    title: 'AI infrastructure',
+    description:
+      'Build agent runtimes, model-provider integrations, tool-calling layers, RAG pipelines, and the protocols connecting them.',
+    capabilities: ['Agent orchestration', 'Tool protocols', 'RAG', 'LLM providers'],
+  },
+  {
+    number: '03',
+    title: 'Developer platforms',
+    description:
+      'Turn complex engineering workflows into focused frameworks, CLIs, SDKs, and automation that teams can use confidently.',
+    capabilities: ['SDKs & frameworks', 'CLI tooling', 'CI/CD', 'Open source'],
+  },
+]
+
 const PROJECTS = [
   {
-    index: '01',
+    number: '01',
     name: 'go-agent',
     type: 'AI agent framework',
     description:
-      'A Go-native framework for building autonomous agents with orchestration, tool calling, memory, sessions, and multiple model providers as first-class primitives.',
+      'A Go-native framework for autonomous agents with orchestration, tool calling, sessions, memory, and multiple model providers.',
     tags: ['Go', 'Agents', 'Tool calling'],
     href: 'https://github.com/Protocol-Lattice/go-agent',
-    featured: true,
   },
   {
-    index: '02',
+    number: '02',
     name: 'neo',
     type: 'Type-friendly RPC',
     description:
-      'A procedure-oriented framework for Go backends with queries, mutations, subscriptions, middleware, typed clients, and code generation.',
+      'A procedure-oriented backend framework with queries, mutations, subscriptions, middleware, typed clients, and code generation.',
     tags: ['Go', 'RPC', 'WebSocket'],
     href: 'https://github.com/Protocol-Lattice/neo',
-    featured: true,
   },
   {
-    index: '03',
+    number: '03',
     name: 'go-harness',
     type: 'Agentic development runtime',
     description:
-      'A controllable coding-agent harness with approval-gated execution, task graphs, work queues, validation, and multi-agent workflows.',
+      'A controllable coding-agent harness with approval gates, task graphs, work queues, validation, and multi-agent workflows.',
     tags: ['Go', 'AI tooling', 'Automation'],
     href: 'https://github.com/Protocol-Lattice/go-harness',
-    featured: true,
   },
   {
-    index: '04',
+    number: '04',
     name: 'go-utcp',
     type: 'Universal tool protocol',
     description:
-      'The Go SDK for a transport-agnostic protocol that lets agents discover and call tools through HTTP, SSE, WebSocket, gRPC, CLI, and more.',
+      'The Go SDK for transport-agnostic tool discovery and execution across HTTP, SSE, WebSocket, gRPC, CLI, and more.',
     tags: ['Go', 'Protocols', 'Interoperability'],
     href: 'https://github.com/universal-tool-calling-protocol/go-utcp',
-    featured: false,
+  },
+]
+
+const PRICING = [
+  {
+    name: 'Architecture session',
+    price: '€250',
+    cadence: '90 minutes',
+    description: 'A focused working session for one difficult technical decision.',
+    items: ['Context reviewed before the call', 'Live architecture discussion', 'Written decisions and next steps'],
+    cta: 'Book a session',
+    subject: 'Architecture session inquiry',
   },
   {
-    index: '05',
-    name: 'GoEventBus',
-    type: 'Event-driven infrastructure',
-    description:
-      'A compact event bus for concurrent Go applications, designed around predictable dispatch, extensible transports, and straightforward APIs.',
-    tags: ['Go', 'Concurrency', 'Messaging'],
-    href: 'https://github.com/Protocol-Lattice/GoEventBus',
-    featured: false,
+    name: 'Technical audit',
+    price: '€1,500',
+    prefix: 'from',
+    cadence: 'fixed scope',
+    description: 'An independent review of a Go codebase, architecture, or AI system.',
+    items: ['Codebase and architecture review', 'Risk and bottleneck map', 'Prioritized recommendation report'],
+    cta: 'Request an audit',
+    subject: 'Technical audit inquiry',
   },
   {
-    index: '06',
-    name: 'memoryArena',
-    type: 'Allocation toolkit',
-    description:
-      'A family of typed arena allocators for performance-sensitive Go workloads, including concurrent and pooled variants.',
-    tags: ['Go', 'Performance', 'Memory'],
-    href: 'https://github.com/Protocol-Lattice/memoryArena',
-    featured: false,
+    name: 'Delivery sprint',
+    price: '€5,000',
+    prefix: 'from',
+    cadence: '1–2 weeks',
+    description: 'A focused implementation sprint with a defined outcome and handoff.',
+    items: ['Scoped implementation plan', 'Tested production-ready code', 'Documentation and handoff'],
+    cta: 'Plan a sprint',
+    subject: 'Delivery sprint inquiry',
+    featured: true,
+  },
+  {
+    name: 'Embedded engineering',
+    price: '€7,500',
+    prefix: 'from',
+    cadence: 'per month',
+    description: 'Reserved senior engineering capacity for ongoing product delivery.',
+    items: ['Weekly reserved capacity', 'Implementation and technical review', 'Async collaboration with your team'],
+    cta: 'Discuss availability',
+    subject: 'Embedded engineering inquiry',
   },
 ]
 
@@ -95,17 +138,25 @@ const EXPERIENCE = [
   },
 ]
 
-const CAPABILITIES = [
-  ['Backend systems', 'Go, gRPC, GraphQL, REST, WebSocket'],
-  ['Distributed architecture', 'Event-driven systems, microservices, messaging'],
-  ['AI infrastructure', 'Agents, tool protocols, RAG, model providers'],
-  ['Platform engineering', 'Docker, Kubernetes, CI/CD, observability'],
+const PROCESS = [
+  ['Discover', 'Clarify the outcome, constraints, risks, and definition of done.'],
+  ['Design', 'Create the smallest architecture that solves the real problem cleanly.'],
+  ['Deliver', 'Implement in visible increments with tests, review, and practical documentation.'],
+  ['Transfer', 'Leave the system understandable, maintainable, and owned by the team.'],
 ]
 
 function ArrowUpRight() {
   return (
     <svg viewBox="0 0 20 20" aria-hidden="true">
       <path d="M5 15 15 5M7 5h8v8" />
+    </svg>
+  )
+}
+
+function CheckIcon() {
+  return (
+    <svg viewBox="0 0 16 16" aria-hidden="true">
+      <path d="m3 8 3 3 7-7" />
     </svg>
   )
 }
@@ -139,7 +190,7 @@ function Reveal({ children, className = '', delay = 0 }) {
           observer.disconnect()
         }
       },
-      { rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
+      { rootMargin: '0px 0px -7% 0px', threshold: 0.08 },
     )
 
     observer.observe(element)
@@ -187,9 +238,10 @@ function Header() {
       </a>
 
       <nav className={`site-nav ${menuOpen ? 'is-open' : ''}`} aria-label="Primary navigation">
+        <a href="#services" onClick={closeMenu}>Services</a>
         <a href="#work" onClick={closeMenu}>Work</a>
-        <a href="#about" onClick={closeMenu}>About</a>
-        <a href="#experience" onClick={closeMenu}>Experience</a>
+        <a href="#pricing" onClick={closeMenu}>Pricing</a>
+        <a href="#about" onClick={closeMenu}>Approach</a>
         <a href="#contact" onClick={closeMenu}>Contact</a>
         <a
           className="nav-social"
@@ -215,24 +267,38 @@ function Header() {
   )
 }
 
-function NetworkVisual() {
+function ArchitecturePreview() {
   return (
-    <div className="network-visual" aria-hidden="true">
-      <div className="network-grid" />
-      <div className="orbit orbit-one" />
-      <div className="orbit orbit-two" />
-      <div className="network-node node-core"><span>Go</span></div>
-      <div className="network-node node-agent"><span>agent</span></div>
-      <div className="network-node node-tool"><span>tool</span></div>
-      <div className="network-node node-event"><span>event</span></div>
-      <div className="network-node node-api"><span>API</span></div>
-      <div className="network-line line-one" />
-      <div className="network-line line-two" />
-      <div className="network-line line-three" />
-      <div className="network-line line-four" />
-      <div className="visual-caption">
-        <span className="status-dot" />
-        building reliable connections
+    <div className="architecture-preview" aria-label="Illustration of a Go system connecting agents, tools, and services">
+      <div className="preview-toolbar">
+        <span><i /> system.map</span>
+        <span>production-ready</span>
+      </div>
+      <div className="preview-canvas">
+        <div className="preview-column preview-inputs">
+          <p>Inputs</p>
+          <span>Agents</span>
+          <span>Events</span>
+          <span>Requests</span>
+        </div>
+        <div className="preview-connector connector-left"><span /></div>
+        <div className="preview-core">
+          <small>runtime</small>
+          <strong>Go</strong>
+          <p>clear APIs<br />predictable concurrency</p>
+        </div>
+        <div className="preview-connector connector-right"><span /></div>
+        <div className="preview-column preview-outputs">
+          <p>Outputs</p>
+          <span>Tools</span>
+          <span>Services</span>
+          <span>Data</span>
+        </div>
+      </div>
+      <div className="preview-footer">
+        <div><span>Architecture</span><strong>Composable</strong></div>
+        <div><span>Delivery</span><strong>Incremental</strong></div>
+        <div><span>Ownership</span><strong>Transferred</strong></div>
       </div>
     </div>
   )
@@ -243,41 +309,36 @@ function Hero() {
     <main id="top">
       <section className="hero shell" aria-labelledby="hero-title">
         <div className="hero-copy">
-          <div className="eyebrow"><span /> Senior Go engineer · Open source</div>
+          <div className="eyebrow"><span /> Senior Go engineer · Open source builder</div>
           <h1 id="hero-title">
-            Infrastructure for
-            <span>software that thinks.</span>
+            Complex systems.
+            <span>Clear engineering.</span>
           </h1>
           <p className="hero-intro">
-            I design Go systems, AI-agent infrastructure, and developer tools with an emphasis on
-            clear APIs, predictable concurrency, and production-ready architecture.
+            I help teams design and deliver dependable Go backends, AI-agent infrastructure, and
+            developer platforms—without unnecessary architecture or opaque abstractions.
           </p>
           <div className="hero-actions">
-            <a className="button button-primary" href="#work">Explore selected work</a>
-            <a
-              className="button button-secondary"
-              href="https://github.com/Raezil"
-              target="_blank"
-              rel="noreferrer"
-            >
-              View GitHub <ArrowUpRight />
+            <a className="button button-primary" href="#pricing">View pricing</a>
+            <a className="button button-secondary" href="mailto:kmosc@protonmail.com?subject=Project%20inquiry">
+              Discuss a project <ArrowUpRight />
             </a>
           </div>
           <dl className="hero-facts">
-            <div><dt>Focus</dt><dd>Go · AI · distributed systems</dd></div>
-            <div><dt>Building</dt><dd>Protocol Lattice</dd></div>
-            <div><dt>Based in</dt><dd>Poland · Remote Europe</dd></div>
+            <div><dt>Specialism</dt><dd>Go · AI · distributed systems</dd></div>
+            <div><dt>Engagement</dt><dd>Audit · sprint · embedded</dd></div>
+            <div><dt>Location</dt><dd>Poland · Remote Europe</dd></div>
           </dl>
         </div>
-        <NetworkVisual />
+        <ArchitecturePreview />
       </section>
     </main>
   )
 }
 
-function SectionHeading({ eyebrow, title, description }) {
+function SectionHeading({ eyebrow, title, description, light = false }) {
   return (
-    <div className="section-heading">
+    <div className={`section-heading ${light ? 'is-light' : ''}`}>
       <p className="section-eyebrow">{eyebrow}</p>
       <div>
         <h2>{title}</h2>
@@ -287,74 +348,153 @@ function SectionHeading({ eyebrow, title, description }) {
   )
 }
 
-function ProjectCard({ project, delay }) {
+function Services() {
   return (
-    <Reveal className={`project-card ${project.featured ? 'project-featured' : ''}`} delay={delay}>
-      <a href={project.href} target="_blank" rel="noreferrer" aria-label={`${project.name} on GitHub`}>
-        <div className="project-topline">
-          <span>{project.index}</span>
-          <ArrowUpRight />
-        </div>
-        <div className="project-content">
-          <p className="project-type">{project.type}</p>
-          <h3>{project.name}</h3>
-          <p className="project-description">{project.description}</p>
-        </div>
-        <ul className="tag-list" aria-label="Technologies">
-          {project.tags.map((tag) => <li key={tag}>{tag}</li>)}
-        </ul>
-      </a>
-    </Reveal>
+    <section className="section shell" id="services">
+      <Reveal>
+        <SectionHeading
+          eyebrow="01 · Services"
+          title="Senior engineering where the architecture matters."
+          description="Focused help for teams building backend infrastructure, AI products, and developer-facing platforms."
+        />
+      </Reveal>
+      <div className="service-grid">
+        {SERVICES.map((service, index) => (
+          <Reveal className="service-card" key={service.title} delay={index * 70}>
+            <div className="service-number">{service.number}</div>
+            <h3>{service.title}</h3>
+            <p>{service.description}</p>
+            <ul>
+              {service.capabilities.map((capability) => <li key={capability}>{capability}</li>)}
+            </ul>
+          </Reveal>
+        ))}
+      </div>
+    </section>
   )
 }
 
 function Work() {
   return (
-    <section className="section shell" id="work">
-      <Reveal>
-        <SectionHeading
-          eyebrow="01 · Selected work"
-          title="Open infrastructure, built in public."
-          description="Frameworks and foundational libraries for agents, backends, protocols, and high-performance Go applications."
-        />
-      </Reveal>
-      <div className="project-grid">
-        {PROJECTS.map((project, index) => (
-          <ProjectCard key={project.name} project={project} delay={(index % 3) * 70} />
-        ))}
+    <section className="section section-muted" id="work">
+      <div className="shell">
+        <Reveal>
+          <SectionHeading
+            eyebrow="02 · Selected work"
+            title="Proof through open-source systems."
+            description="Projects that demonstrate the same principles used in client work: direct APIs, deliberate tradeoffs, and maintainable implementation."
+          />
+        </Reveal>
+        <div className="project-list">
+          {PROJECTS.map((project, index) => (
+            <Reveal className="project-row" key={project.name} delay={index * 55}>
+              <a href={project.href} target="_blank" rel="noreferrer" aria-label={`${project.name} on GitHub`}>
+                <span className="project-number">{project.number}</span>
+                <div className="project-title">
+                  <p>{project.type}</p>
+                  <h3>{project.name}</h3>
+                </div>
+                <p className="project-description">{project.description}</p>
+                <ul className="tag-list" aria-label="Technologies">
+                  {project.tags.map((tag) => <li key={tag}>{tag}</li>)}
+                </ul>
+                <span className="project-arrow"><ArrowUpRight /></span>
+              </a>
+            </Reveal>
+          ))}
+        </div>
+        <Reveal className="section-footer-link">
+          <a href="https://github.com/orgs/Protocol-Lattice/repositories" target="_blank" rel="noreferrer">
+            Browse all Protocol Lattice repositories <ArrowUpRight />
+          </a>
+        </Reveal>
       </div>
-      <Reveal className="section-footer-link">
-        <a href="https://github.com/orgs/Protocol-Lattice/repositories" target="_blank" rel="noreferrer">
-          Browse all Protocol Lattice repositories <ArrowUpRight />
-        </a>
-      </Reveal>
+    </section>
+  )
+}
+
+function PricingCard({ plan, delay }) {
+  const mailSubject = encodeURIComponent(plan.subject)
+
+  return (
+    <Reveal className={`pricing-card ${plan.featured ? 'is-featured' : ''}`} delay={delay}>
+      {plan.featured && <span className="pricing-badge">Best for delivery</span>}
+      <div className="pricing-heading">
+        <p>{plan.name}</p>
+        <div className="pricing-amount">
+          {plan.prefix && <span>{plan.prefix}</span>}
+          <strong>{plan.price}</strong>
+          <small>{plan.cadence}</small>
+        </div>
+      </div>
+      <p className="pricing-description">{plan.description}</p>
+      <ul className="pricing-list">
+        {plan.items.map((item) => (
+          <li key={item}><CheckIcon /> {item}</li>
+        ))}
+      </ul>
+      <a className="pricing-cta" href={`mailto:kmosc@protonmail.com?subject=${mailSubject}`}>
+        {plan.cta} <ArrowUpRight />
+      </a>
+    </Reveal>
+  )
+}
+
+function Pricing() {
+  return (
+    <section className="section pricing" id="pricing">
+      <div className="shell">
+        <Reveal>
+          <SectionHeading
+            eyebrow="03 · Pricing"
+            title="Clear ways to start."
+            description="Indicative pricing for common engagement shapes. Final scope, timeline, and price are agreed before any work begins."
+            light
+          />
+        </Reveal>
+        <div className="pricing-grid">
+          {PRICING.map((plan, index) => (
+            <PricingCard key={plan.name} plan={plan} delay={(index % 2) * 70} />
+          ))}
+        </div>
+        <Reveal className="pricing-note">
+          <p>Need something different?</p>
+          <a href="mailto:kmosc@protonmail.com?subject=Custom%20engineering%20engagement">
+            Request a custom scope <ArrowUpRight />
+          </a>
+        </Reveal>
+      </div>
     </section>
   )
 }
 
 function About() {
   return (
-    <section className="section section-muted" id="about">
-      <div className="shell">
-        <Reveal>
-          <SectionHeading eyebrow="02 · Approach" title="Make the complex feel obvious." />
+    <section className="section shell" id="about">
+      <Reveal>
+        <SectionHeading
+          eyebrow="04 · Approach"
+          title="Small feedback loops. Durable outcomes."
+          description="The goal is not simply to ship code. It is to leave behind a system the team can understand, operate, and extend."
+        />
+      </Reveal>
+      <div className="about-grid">
+        <Reveal className="about-statement">
+          <p>
+            I work at the layer where architecture becomes an API—turning concurrency,
+            distributed communication, and agent orchestration into tools developers can trust.
+          </p>
+          <a className="text-link" href="https://github.com/Raezil" target="_blank" rel="noreferrer">
+            See the engineering in public <ArrowUpRight />
+          </a>
         </Reveal>
-        <div className="about-grid">
-          <Reveal className="about-statement">
-            <p>
-              I work at the layer where architecture becomes an API: turning concurrency,
-              distributed communication, and agent orchestration into tools other developers can
-              understand and trust.
-            </p>
-          </Reveal>
-          <div className="capability-list">
-            {CAPABILITIES.map(([title, detail], index) => (
-              <Reveal className="capability-row" key={title} delay={index * 60}>
-                <span>0{index + 1}</span>
-                <div><h3>{title}</h3><p>{detail}</p></div>
-              </Reveal>
-            ))}
-          </div>
+        <div className="process-list">
+          {PROCESS.map(([title, description], index) => (
+            <Reveal className="process-row" key={title} delay={index * 55}>
+              <span>0{index + 1}</span>
+              <div><h3>{title}</h3><p>{description}</p></div>
+            </Reveal>
+          ))}
         </div>
       </div>
     </section>
@@ -363,22 +503,24 @@ function About() {
 
 function Experience() {
   return (
-    <section className="section shell" id="experience">
-      <Reveal>
-        <SectionHeading
-          eyebrow="03 · Experience"
-          title="Backend engineering with a product mindset."
-          description="Experience across open-source infrastructure, enterprise systems, APIs, and production web platforms."
-        />
-      </Reveal>
-      <div className="experience-list">
-        {EXPERIENCE.map((item, index) => (
-          <Reveal className="experience-row" key={`${item.company}-${item.period}`} delay={index * 60}>
-            <p className="experience-period">{item.period}</p>
-            <div className="experience-title"><h3>{item.company}</h3><p>{item.role}</p></div>
-            <p className="experience-description">{item.description}</p>
-          </Reveal>
-        ))}
+    <section className="section section-muted" id="experience">
+      <div className="shell">
+        <Reveal>
+          <SectionHeading
+            eyebrow="05 · Experience"
+            title="Backend engineering with a product mindset."
+            description="Experience across open-source infrastructure, enterprise systems, APIs, and production web platforms."
+          />
+        </Reveal>
+        <div className="experience-list">
+          {EXPERIENCE.map((item, index) => (
+            <Reveal className="experience-row" key={`${item.company}-${item.period}`} delay={index * 55}>
+              <p className="experience-period">{item.period}</p>
+              <div className="experience-title"><h3>{item.company}</h3><p>{item.role}</p></div>
+              <p className="experience-description">{item.description}</p>
+            </Reveal>
+          ))}
+        </div>
       </div>
     </section>
   )
@@ -389,16 +531,18 @@ function Contact() {
     <section className="contact" id="contact">
       <div className="shell contact-grid">
         <Reveal>
-          <p className="section-eyebrow">04 · Contact</p>
-          <h2>Let’s build dependable infrastructure.</h2>
+          <p className="section-eyebrow">06 · Contact</p>
+          <h2>Bring the difficult system problem.</h2>
         </Reveal>
         <Reveal className="contact-panel" delay={90}>
           <p>
-            Available for conversations about Go backend engineering, AI infrastructure,
-            open-source collaboration, and developer tooling.
+            Share the outcome you need, the constraints you are facing, and where the current
+            system is getting in the way. I will reply with the most sensible next step.
           </p>
           <div className="contact-actions">
-            <a className="button button-light" href="mailto:kmosc@protonmail.com">kmosc@protonmail.com</a>
+            <a className="button button-light" href="mailto:kmosc@protonmail.com?subject=Engineering%20project%20inquiry">
+              Start a conversation
+            </a>
             <a className="text-link" href="https://www.linkedin.com/in/kamilm97" target="_blank" rel="noreferrer">
               LinkedIn <ArrowUpRight />
             </a>
@@ -407,7 +551,7 @@ function Contact() {
       </div>
       <footer className="shell site-footer">
         <p>© {new Date().getFullYear()} Kamil Mościszko</p>
-        <p>Designed for clarity. Built with React.</p>
+        <p>Go systems · AI infrastructure · developer platforms</p>
         <a href="#top">Back to top ↑</a>
       </footer>
     </section>
@@ -417,10 +561,12 @@ function Contact() {
 export default function App() {
   return (
     <div className="page">
-      <a className="skip-link" href="#work">Skip to selected work</a>
+      <a className="skip-link" href="#services">Skip to services</a>
       <Header />
       <Hero />
+      <Services />
       <Work />
+      <Pricing />
       <About />
       <Experience />
       <Contact />
