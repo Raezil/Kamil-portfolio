@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import HeroScene from './HeroScene'
 import './App.css'
 
 const SERVICES = [
@@ -53,58 +54,6 @@ const PROJECTS = [
     tags: ['Go', 'AI tooling', 'Automation'],
     href: 'https://github.com/Protocol-Lattice/go-harness',
   },
-  {
-    number: '04',
-    name: 'go-utcp',
-    type: 'Universal tool protocol',
-    description:
-      'The Go SDK for transport-agnostic tool discovery and execution across HTTP, SSE, WebSocket, gRPC, CLI, and more.',
-    tags: ['Go', 'Protocols', 'Interoperability'],
-    href: 'https://github.com/universal-tool-calling-protocol/go-utcp',
-  },
-]
-
-const PRICING = [
-  {
-    name: 'Architecture session',
-    price: '€250',
-    cadence: '90 minutes',
-    description: 'A focused working session for one difficult technical decision.',
-    items: ['Context reviewed before the call', 'Live architecture discussion', 'Written decisions and next steps'],
-    cta: 'Book a session',
-    subject: 'Architecture session inquiry',
-  },
-  {
-    name: 'Technical audit',
-    price: '€1,500',
-    prefix: 'from',
-    cadence: 'fixed scope',
-    description: 'An independent review of a Go codebase, architecture, or AI system.',
-    items: ['Codebase and architecture review', 'Risk and bottleneck map', 'Prioritized recommendation report'],
-    cta: 'Request an audit',
-    subject: 'Technical audit inquiry',
-  },
-  {
-    name: 'Delivery sprint',
-    price: '€5,000',
-    prefix: 'from',
-    cadence: '1–2 weeks',
-    description: 'A focused implementation sprint with a defined outcome and handoff.',
-    items: ['Scoped implementation plan', 'Tested production-ready code', 'Documentation and handoff'],
-    cta: 'Plan a sprint',
-    subject: 'Delivery sprint inquiry',
-    featured: true,
-  },
-  {
-    name: 'Embedded engineering',
-    price: '€7,500',
-    prefix: 'from',
-    cadence: 'per month',
-    description: 'Reserved senior engineering capacity for ongoing product delivery.',
-    items: ['Weekly reserved capacity', 'Implementation and technical review', 'Async collaboration with your team'],
-    cta: 'Discuss availability',
-    subject: 'Embedded engineering inquiry',
-  },
 ]
 
 const EXPERIENCE = [
@@ -149,14 +98,6 @@ function ArrowUpRight() {
   return (
     <svg viewBox="0 0 20 20" aria-hidden="true">
       <path d="M5 15 15 5M7 5h8v8" />
-    </svg>
-  )
-}
-
-function CheckIcon() {
-  return (
-    <svg viewBox="0 0 16 16" aria-hidden="true">
-      <path d="m3 8 3 3 7-7" />
     </svg>
   )
 }
@@ -240,7 +181,6 @@ function Header() {
       <nav className={`site-nav ${menuOpen ? 'is-open' : ''}`} aria-label="Primary navigation">
         <a href="#services" onClick={closeMenu}>Services</a>
         <a href="#work" onClick={closeMenu}>Work</a>
-        <a href="#pricing" onClick={closeMenu}>Pricing</a>
         <a href="#about" onClick={closeMenu}>Approach</a>
         <a href="#contact" onClick={closeMenu}>Contact</a>
         <a
@@ -267,38 +207,16 @@ function Header() {
   )
 }
 
-function ArchitecturePreview() {
+function HeroVisual() {
   return (
-    <div className="architecture-preview" aria-label="Illustration of a Go system connecting agents, tools, and services">
-      <div className="preview-toolbar">
-        <span><i /> system.map</span>
-        <span>production-ready</span>
+    <div className="hero-visual" aria-hidden="true">
+      <HeroScene />
+      <div className="hero-visual-frame" />
+      <div className="hero-visual-label hero-visual-label-top">
+        <span /> interactive runtime
       </div>
-      <div className="preview-canvas">
-        <div className="preview-column preview-inputs">
-          <p>Inputs</p>
-          <span>Agents</span>
-          <span>Events</span>
-          <span>Requests</span>
-        </div>
-        <div className="preview-connector connector-left"><span /></div>
-        <div className="preview-core">
-          <small>runtime</small>
-          <strong>Go</strong>
-          <p>clear APIs<br />predictable concurrency</p>
-        </div>
-        <div className="preview-connector connector-right"><span /></div>
-        <div className="preview-column preview-outputs">
-          <p>Outputs</p>
-          <span>Tools</span>
-          <span>Services</span>
-          <span>Data</span>
-        </div>
-      </div>
-      <div className="preview-footer">
-        <div><span>Architecture</span><strong>Composable</strong></div>
-        <div><span>Delivery</span><strong>Incremental</strong></div>
-        <div><span>Ownership</span><strong>Transferred</strong></div>
+      <div className="hero-visual-label hero-visual-label-bottom">
+        Go · agents · services
       </div>
     </div>
   )
@@ -319,26 +237,26 @@ function Hero() {
             developer platforms—without unnecessary architecture or opaque abstractions.
           </p>
           <div className="hero-actions">
-            <a className="button button-primary" href="#pricing">View pricing</a>
+            <a className="button button-primary" href="#services">Explore services</a>
             <a className="button button-secondary" href="mailto:kmosc@protonmail.com?subject=Project%20inquiry">
               Discuss a project <ArrowUpRight />
             </a>
           </div>
           <dl className="hero-facts">
             <div><dt>Specialism</dt><dd>Go · AI · distributed systems</dd></div>
-            <div><dt>Engagement</dt><dd>Audit · sprint · embedded</dd></div>
+            <div><dt>Engagement</dt><dd>Architecture · delivery · review</dd></div>
             <div><dt>Location</dt><dd>Poland · Remote Europe</dd></div>
           </dl>
         </div>
-        <ArchitecturePreview />
+        <HeroVisual />
       </section>
     </main>
   )
 }
 
-function SectionHeading({ eyebrow, title, description, light = false }) {
+function SectionHeading({ eyebrow, title, description }) {
   return (
-    <div className={`section-heading ${light ? 'is-light' : ''}`}>
+    <div className="section-heading">
       <p className="section-eyebrow">{eyebrow}</p>
       <div>
         <h2>{title}</h2>
@@ -413,67 +331,12 @@ function Work() {
   )
 }
 
-function PricingCard({ plan, delay }) {
-  const mailSubject = encodeURIComponent(plan.subject)
-
-  return (
-    <Reveal className={`pricing-card ${plan.featured ? 'is-featured' : ''}`} delay={delay}>
-      {plan.featured && <span className="pricing-badge">Best for delivery</span>}
-      <div className="pricing-heading">
-        <p>{plan.name}</p>
-        <div className="pricing-amount">
-          {plan.prefix && <span>{plan.prefix}</span>}
-          <strong>{plan.price}</strong>
-          <small>{plan.cadence}</small>
-        </div>
-      </div>
-      <p className="pricing-description">{plan.description}</p>
-      <ul className="pricing-list">
-        {plan.items.map((item) => (
-          <li key={item}><CheckIcon /> {item}</li>
-        ))}
-      </ul>
-      <a className="pricing-cta" href={`mailto:kmosc@protonmail.com?subject=${mailSubject}`}>
-        {plan.cta} <ArrowUpRight />
-      </a>
-    </Reveal>
-  )
-}
-
-function Pricing() {
-  return (
-    <section className="section pricing" id="pricing">
-      <div className="shell">
-        <Reveal>
-          <SectionHeading
-            eyebrow="03 · Pricing"
-            title="Clear ways to start."
-            description="Indicative pricing for common engagement shapes. Final scope, timeline, and price are agreed before any work begins."
-            light
-          />
-        </Reveal>
-        <div className="pricing-grid">
-          {PRICING.map((plan, index) => (
-            <PricingCard key={plan.name} plan={plan} delay={(index % 2) * 70} />
-          ))}
-        </div>
-        <Reveal className="pricing-note">
-          <p>Need something different?</p>
-          <a href="mailto:kmosc@protonmail.com?subject=Custom%20engineering%20engagement">
-            Request a custom scope <ArrowUpRight />
-          </a>
-        </Reveal>
-      </div>
-    </section>
-  )
-}
-
 function About() {
   return (
     <section className="section shell" id="about">
       <Reveal>
         <SectionHeading
-          eyebrow="04 · Approach"
+          eyebrow="03 · Approach"
           title="Small feedback loops. Durable outcomes."
           description="The goal is not simply to ship code. It is to leave behind a system the team can understand, operate, and extend."
         />
@@ -507,7 +370,7 @@ function Experience() {
       <div className="shell">
         <Reveal>
           <SectionHeading
-            eyebrow="05 · Experience"
+            eyebrow="04 · Experience"
             title="Backend engineering with a product mindset."
             description="Experience across open-source infrastructure, enterprise systems, APIs, and production web platforms."
           />
@@ -531,7 +394,7 @@ function Contact() {
     <section className="contact" id="contact">
       <div className="shell contact-grid">
         <Reveal>
-          <p className="section-eyebrow">06 · Contact</p>
+          <p className="section-eyebrow">05 · Contact</p>
           <h2>Bring the difficult system problem.</h2>
         </Reveal>
         <Reveal className="contact-panel" delay={90}>
@@ -566,7 +429,6 @@ export default function App() {
       <Hero />
       <Services />
       <Work />
-      <Pricing />
       <About />
       <Experience />
       <Contact />
