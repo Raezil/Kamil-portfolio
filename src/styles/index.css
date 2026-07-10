@@ -12,9 +12,11 @@
   padding: 0;
 }
 
-/* Keep the hero vibe visual static without affecting page reveals or hover states. */
-.vibe-visual *,
-.vibe-visual *::before,
-.vibe-visual *::after {
-  animation: none !important;
+/* Expand the hero copy after removing the visual panel. */
+.hero-text-only {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.hero-text-only .hero-copy {
+  max-width: 940px;
 }
